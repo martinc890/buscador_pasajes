@@ -24,4 +24,8 @@ class SaveActor(pykka.ThreadingActor):
         with open('vuelos_ordenados.csv', 'w', newline='', encoding='utf-8') as file:
             writer = csv.DictWriter(file, fieldnames=['airline', 'price', 'departure_time', 'arrival_time'])
             writer.writeheader()
+
             writer.writerows(flights)
+=======
+            writer.writerows(flights)
+

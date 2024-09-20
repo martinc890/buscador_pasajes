@@ -7,6 +7,7 @@ from actors.compare_actor import CompareActor
 from actors.save_actor import SaveActor
 import pykka
 
+
 # Lista de aeropuertos disponibles
 aeropuertos = {
     'Ezeiza (EZE)': 'EZE',
@@ -24,6 +25,13 @@ def iniciar_busqueda():
     if origen == destino:
         messagebox.showerror("Error", "El aeropuerto de origen y destino no pueden ser iguales.")
         return
+=======
+if __name__ == "_main_":
+    # Definir los detalles de búsqueda
+    origin = "EZE"
+    destination = "MIA"
+    date = "2024-10-15"
+
 
     # Inicializar los actores
     search_actor_ref = SearchActor.start()
@@ -42,6 +50,7 @@ def iniciar_busqueda():
     # Cerrar los actores después de usarlos
     search_actor_ref.stop()
     compare_actor_ref.stop()
+
     save_actor_ref.stop()
 
     # Mostrar mensaje de éxito
@@ -73,3 +82,6 @@ tk.Button(root, text="Iniciar Búsqueda", command=iniciar_busqueda).pack(pady=20
 
 # Iniciar la interfaz gráfica
 root.mainloop()
+=======
+    save_actor_ref.stop()
+
