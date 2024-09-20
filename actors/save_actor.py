@@ -1,24 +1,27 @@
-import os
+import csv
 import pykka
 
 class SaveActor(pykka.ThreadingActor):
+
     def on_receive(self, message):
-        results = message.get('results')
-        filename = 'results.txt'
-        filepath = os.path.join(os.getcwd(), filename)
+        flights = message.get('flights')
         
-        if not results:
-            return "No results to save"
-        
-        with open(filepath, 'w') as f:
-            f.write("Comparación de vuelos\n")
-            f.write("="*40 + "\n")
-            for result in results:
-                f.write(f"Aerolínea: {result['airline']}\n")
-                f.write(f"Precio: {result['price']}\n")
-                f.write(f"Hora de salida: {result['departure_time']}\n")
-                f.write(f"Hora de llegada: {result['arrival_time']}\n")
-                f.write(f"Escalas: {result['stops']}\n")
-                f.write("-"*40 + "\n")
-        
-        return filepath
+        # Guardar en archivo de texto
+        self.save_to_text(flights)
+
+        # Guardar en archivo CSV
+        self.save_to_csv(flights)
+
+        print("Resultados guardados correctamente en archivos de texto y CSV.")
+
+    def save_to_text(self, flights):
+        with open('vuelos_ordenados.txt', 'w', encoding='utf-8') as file:
+            file.write("Vuelos ordenados por precio (menor a mayor):\n")
+            for flight in flights:
+                file.write(f"{flight['airline']} - Precio: {flight['price']}, Hora de salida: {flight['departure_time']}, Hora de llegada: {flight['arrival_time']}\n")
+
+    def save_to_csv(self, flights):
+        with open('vuelos_ordenados.csv', 'w', newline='', encoding='utf-8') as file:
+            writer = csv.DictWriter(file, fieldnames=['airline', 'price', 'departure_time', 'arrival_time'])
+            writer.writeheader()
+            writer.writerows(flights)
