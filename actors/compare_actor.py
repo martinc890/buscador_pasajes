@@ -7,7 +7,9 @@ class CompareActor(pykka.ThreadingActor):
         
         # Convertir precios a un formato numérico para ordenar
         for flight in flights:
-            flight['price'] = float(flight['price'].replace(',', '').replace('ARS', '').strip())
+            # Reemplazar punto por nada (para los miles) y coma por punto (para los decimales)
+            price_cleaned = flight['price'].replace('.', '').replace(',', '.').replace('ARS', '').strip()
+            flight['price'] = float(price_cleaned)
         
         # Ordenar los vuelos por precio (menor a mayor)
         flights_sorted = sorted(flights, key=lambda x: x['price'])
